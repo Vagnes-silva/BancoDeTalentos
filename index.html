@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profissionais - Pesquisa Aberta com Login para Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="cracha.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <!-- <img class="header-img" src="bannner.png" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=Find&background=ffd966&color=0b2a4a&size=70';"> -->
+            <div class="header-title">
+                Profissionais
+                <small>Pesquise à vontade · Cadastre-se para gerenciar</small>
+            </div>
+        </div>
+        <div class="header-right" id="headerRight">
+            <span class="header-user" id="headerUser"></span>
+            <button class="btn-login-header" id="btnLoginHeader">🔑 Login</button>
+            <button class="btn-logout" id="btnLogout" style="display:none;">Sair</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- MODAL DE LOGIN/CADASTRO -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal">
+                <h2 id="modalTitle">Login</h2>
+                <p class="subtitle" id="modalSubtitle">Entre com suas credenciais para acessar o sistema</p>
+                
+                <div id="modalError" class="error-msg"></div>
+                <div id="modalSuccess" class="success-msg"></div>
+
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com">
+                </div>
+                <div class="form-group" id="senhaGroup">
+                    <label for="loginSenha">Senha</label>
+                    <div class="senha-container">
+                        <input type="password" id="loginSenha" placeholder="Digite sua senha">
+                        <button type="button" class="senha-toggle" id="toggleSenha">
+                            <i class="fas fa-eye" id="iconeOlho"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group" id="confirmSenhaGroup" style="display:none;">
+                    <label for="loginConfirmSenha">Confirmar Senha</label>
+                    <div class="senha-container">
+                        <input type="password" id="loginConfirmSenha" placeholder="Digite a senha novamente">
+                        <button type="button" class="senha-toggle" id="toggleConfirmSenha">
+                            <i class="fas fa-eye" id="iconeOlhoConfirm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" id="btnModalAction">Entrar</button>
+                    <button class="btn-secondary" id="btnModalCancel">Cancelar</button>
+                </div>
+                <div>
+                    <span class="toggle-link" id="toggleAuthMode">Não tem conta? Cadastre-se</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+        SEÇÃO DO VISITANTE (PESQUISA + RESULTADOS)
+        ======================================== -->
+        <div class="visitante-section" id="visitanteSection">
+            <div class="toolbar">
+                <div class="search-section">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Busque por nome, cargo, cidade, experiência...">
+                    <button class="search-btn" id="searchBtn">🔍 Pesquisar</button>
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <span class="status-count" id="resultCount">0 candidatos</span>
+                <button class="clear-btn" id="clearBtn">✕ Limpar</button>
+            </div>
+
+            <div class="candidates-grid" id="candidatesGrid">
+                <div class="welcome-message">
+                    <div class="icon">🔎</div>
+                    <h2>Nenhum candidato exibido</h2>
+                    <p>Digite um termo no campo acima e clique em "Pesquisar" para encontrar profissionais.</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.6;">Exemplo: jardineiro, front-end, São Paulo, Maria...</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.8rem; opacity: 0.5;">💡 Para cadastrar novos candidatos, faça login ou crie uma conta.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+        SEÇÃO DO USUÁRIO LOGADO (APENAS CADASTRO)
+        ======================================== -->
+        <div class="cadastro-section" id="cadastroSection">
+            <h3 id="formTitle"><span>➕</span> Cadastrar novo candidato</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="nome">Nome <span class="obrigatorio">*</span></label>
+                    <input type="text" id="nome" placeholder="Nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone <span class="obrigatorio">*</span></label>
+                    <input type="text" id="telefone" placeholder="(00) 00000-0000">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail <span class="obrigatorio">*</span></label>
+                    <input type="email" id="email" placeholder="email@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="cargo">Cargo <span class="obrigatorio">*</span></label>
+                    <input type="text" id="cargo" placeholder="Ex: jardineiro, pintor, desenvolvedor...">
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Rua/Avenida <span class="obrigatorio">*</span></label>
+                    <input type="text" id="endereco" placeholder="Ex: Rua das Flores">
+                </div>
+                <div class="form-group">
+                    <label for="numero">Número <span class="obrigatorio">*</span></label>
+                    <input type="text" id="numero" placeholder="Ex: 123, Ap 45">
+                </div>
+                <div class="form-group">
+                    <label for="cidade">Cidade <span class="obrigatorio">*</span></label>
+                    <input type="text" id="cidade" placeholder="Ex: São Paulo">
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado <span class="obrigatorio">*</span></label>
+                    <select id="estado">
+                        <option value="">Selecione</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="experiencia">Experiência profissional</label>
+                    <textarea id="experiencia" placeholder="Descreva sua experiência profissional" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn-cadastrar" id="btnCadastrar">💾 Salvar</button>
+                <button class="btn-cancelar-cadastro" id="btnCancelarCadastro">Cancelar</button>
+                <span id="feedbackMsg" class="feedback-msg"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>Pesquisa aberta · Cadastro de candidatos requer login</span>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
